@@ -1,14 +1,38 @@
-"use client";
+import { Metadata } from "next";
 
-import { useParams } from "next/navigation";
+interface ClassrommPageProps {
+  params: Promise<{ id: string }>;
+}
 
-const ClassroomPage = () => {
-  const params = useParams();
-  const { id } = params;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/classrooms/${id}`
+  );
+  const classroom = await res.json();
 
-  console.log(params);
+  return {
+    title: classroom.name,
+  };
+}
 
-  return <div>Classroom page with id {id}</div>;
+const ClassroomPage = async ({ params }: ClassrommPageProps) => {
+  const { id } = await params;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/classrooms/${id}`
+  );
+  const classroom = await res.json();
+
+  return (
+    <div>
+      Classroom page with id {id} and title {classroom.name}
+    </div>
+  );
 };
 
 export default ClassroomPage;
