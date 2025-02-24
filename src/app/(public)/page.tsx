@@ -18,7 +18,7 @@ const ClassroomsPage = async () => {
           title="Ajouter une classe"
           textButton="Ajouter une annonce"
         >
-          <ClassroomForm />
+          <ClassroomForm className="mt-10" />
         </PrimaryDialog>
       </div>
 
@@ -26,7 +26,7 @@ const ClassroomsPage = async () => {
         {classrooms?.map((classroom: Classroom) => (
           <div key={classroom.id}>
             <Link href={`/classrooms/${classroom.id}`}>
-              <h2>{classroom.name}</h2>
+              <h2>{classroom.classroomName}</h2>
               <p>{classroom.description}</p>
             </Link>
           </div>

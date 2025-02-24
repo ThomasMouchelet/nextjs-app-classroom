@@ -16,7 +16,7 @@ export async function generateMetadata({
   const classroom = await res.json();
 
   return {
-    title: classroom.name,
+    title: classroom.classroomName,
   };
 }
 
@@ -30,7 +30,7 @@ const ClassroomPage = async ({ params }: ClassrommPageProps) => {
 
   return (
     <div>
-      Classroom page with id {id} and title {classroom.name}
+      Classroom page with id {id} and title {classroom.classroomName}
     </div>
   );
 };

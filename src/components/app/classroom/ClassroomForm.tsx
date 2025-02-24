@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Classroom } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
+import FormErrorMessage from "../common/FormErrorMessage";
 
 interface ClassroomFormProps {
   className?: string;
@@ -13,7 +14,6 @@ const ClassroomForm = ({ className }: ClassroomFormProps) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Classroom>();
   const onSubmit: SubmitHandler<Classroom> = (data) => console.log(data);
@@ -24,12 +24,19 @@ const ClassroomForm = ({ className }: ClassroomFormProps) => {
       className={`flex flex-col gap-2 ${className}`}
     >
       <Input
-        defaultValue="test"
-        {...(register("name"), { require: "Le titre est obligatoire" })}
+        type="text"
+        placeholder="Entrez votre nom de classe"
+        {...register("classroomName", { required: "Le titre est obligatoire" })}
       />
-      {errors.name && <span>{errors.name.message}</span>}
+      {errors.classroomName && (
+        <FormErrorMessage message={errors.classroomName.message as string} />
+      )}
 
-      <Input defaultValue="description" {...register("description")} />
+      <Input
+        placeholder="Entrez votre description de classe"
+        type="text"
+        {...register("description")}
+      />
 
       <Button type="submit" variant="default">
         Ajouter

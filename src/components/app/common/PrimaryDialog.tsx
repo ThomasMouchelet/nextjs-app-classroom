@@ -29,7 +29,7 @@ const PrimaryDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{children}</DialogDescription>
+          <div>{children}</div>
         </DialogHeader>
       </DialogContent>
     </Dialog>

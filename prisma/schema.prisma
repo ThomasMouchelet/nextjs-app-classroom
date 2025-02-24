@@ -15,7 +15,7 @@ datasource db {
 
 model Classroom {
   id              String   @id @default(cuid())
-  name            String
+  classroomName            String
   description     String?
 
   createdAt       DateTime @default(now())
