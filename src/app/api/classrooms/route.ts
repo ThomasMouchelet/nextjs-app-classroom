@@ -3,11 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export function GET(req: NextRequest) {
+export async function GET() {
   console.log("GET classrooms");
-  console.log("GET req", req);
 
-  return NextResponse.json({ message: "Get all calssrooms" });
+  const classrooms = await prisma.classroom.findMany();
+  console.log("GET classrooms", classrooms);
+
+  return NextResponse.json(classrooms, { status: 200 });
 }
 
 export async function POST(req: NextRequest) {
