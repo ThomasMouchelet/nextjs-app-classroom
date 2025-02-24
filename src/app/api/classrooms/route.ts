@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   // create a new classroom with Prisma
   const classroom = await prisma.classroom.create({
     data: {
-      name: body.name,
+      classroomName: body.classroomName,
       description: body.description,
     },
   });

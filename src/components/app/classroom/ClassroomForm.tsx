@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Classroom } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormErrorMessage from "../common/FormErrorMessage";
+import { useMutation } from "@tanstack/react-query";
 
 interface ClassroomFormProps {
   className?: string;
@@ -16,7 +17,21 @@ const ClassroomForm = ({ className }: ClassroomFormProps) => {
     handleSubmit,
     formState: { errors },
   } = useForm<Classroom>();
-  const onSubmit: SubmitHandler<Classroom> = (data) => console.log(data);
+
+  const mutation = useMutation({
+    mutationFn: async (formData: Classroom) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classrooms`, {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+
+      const classroom = await res.json();
+
+      return classroom;
+    },
+  });
+
+  const onSubmit: SubmitHandler<Classroom> = (data) => mutation.mutate(data);
 
   return (
     <form
