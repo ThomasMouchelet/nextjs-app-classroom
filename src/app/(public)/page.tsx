@@ -1,3 +1,5 @@
+import ClassroomForm from "@/components/app/classroom/ClassroomForm";
+import PrimaryDialog from "@/components/app/common/PrimaryDialog";
 import { Classroom } from "@prisma/client";
 import Link from "next/link";
 
@@ -8,8 +10,17 @@ const ClassroomsPage = async () => {
   console.log("classrooms", classrooms);
 
   return (
-    <div>
+    <div className="container mx-auto py-10">
       <h1>Classrooms page</h1>
+
+      <div className="my-10">
+        <PrimaryDialog
+          title="Ajouter une classe"
+          textButton="Ajouter une annonce"
+        >
+          <ClassroomForm />
+        </PrimaryDialog>
+      </div>
 
       <div>
         {classrooms?.map((classroom: Classroom) => (
