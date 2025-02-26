@@ -1,3 +1,4 @@
+import ButtonCrudAction from "@/components/app/common/ButtonCrudAction";
 import { Metadata } from "next";
 
 interface ClassrommPageProps {
@@ -29,8 +30,19 @@ const ClassroomPage = async ({ params }: ClassrommPageProps) => {
   const classroom = await res.json();
 
   return (
-    <div>
-      Classroom page with id {id} and title {classroom.classroomName}
+    <div className="container mx-auto py-10">
+      <h2>{classroom.classroomName}</h2>
+
+      <ButtonCrudAction
+        type="button"
+        textAction="Supprimer"
+        textLoading="Suppression en cours..."
+        model="classroom"
+        action="remove"
+        id={id}
+      />
+
+      <p>{classroom.description}</p>
     </div>
   );
 };
