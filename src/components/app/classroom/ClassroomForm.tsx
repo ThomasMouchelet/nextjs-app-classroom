@@ -6,6 +6,8 @@ import { Classroom } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormErrorMessage from "../common/FormErrorMessage";
 import { useMutation } from "@tanstack/react-query";
+import { create } from "@/services/classroom.service";
+import { LoaderCircle } from "lucide-react";
 
 interface ClassroomFormProps {
   className?: string;
@@ -20,14 +22,15 @@ const ClassroomForm = ({ className }: ClassroomFormProps) => {
 
   const mutation = useMutation({
     mutationFn: async (formData: Classroom) => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classrooms`, {
-        method: "POST",
-        body: JSON.stringify(formData),
-      });
-
-      const classroom = await res.json();
+      const classroom = await create(formData);
 
       return classroom;
+    },
+    onSuccess: (data) => {
+      console.log("success", data);
+    },
+    onError: (data) => {
+      console.log("error", data);
     },
   });
 
@@ -54,7 +57,14 @@ const ClassroomForm = ({ className }: ClassroomFormProps) => {
       />
 
       <Button type="submit" variant="default">
-        Ajouter
+        {mutation.isPending ? (
+          <span className="flex items-center gap-2">
+            <LoaderCircle className="animate-spin" />
+            <span>Enregistrement...</span>
+          </span>
+        ) : (
+          "Enregistrer"
+        )}
       </Button>
     </form>
   );
