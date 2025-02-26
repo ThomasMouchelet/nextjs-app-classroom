@@ -1,13 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Classroom } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormErrorMessage from "../common/FormErrorMessage";
 import { useMutation } from "@tanstack/react-query";
 import { create } from "@/services/classroom.service";
-import { LoaderCircle } from "lucide-react";
+import ButtonCrudAction from "../common/ButtonCrudAction";
 
 interface ClassroomFormProps {
   className?: string;
@@ -56,16 +55,13 @@ const ClassroomForm = ({ className }: ClassroomFormProps) => {
         {...register("description")}
       />
 
-      <Button type="submit" variant="default">
-        {mutation.isPending ? (
-          <span className="flex items-center gap-2">
-            <LoaderCircle className="animate-spin" />
-            <span>Enregistrement...</span>
-          </span>
-        ) : (
-          "Enregistrer"
-        )}
-      </Button>
+      <ButtonCrudAction
+        mutation={mutation}
+        type="submit"
+        textAction="Ajouter"
+        textLoading="Ajout en cours..."
+        variant="default"
+      />
     </form>
   );
 };
