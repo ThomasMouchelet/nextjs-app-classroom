@@ -1,12 +1,14 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import React, { Children, cloneElement, isValidElement, useState } from "react";
 
 interface PrimaryDialogProps {
   children: React.ReactNode;
@@ -21,15 +23,24 @@ const PrimaryDialog = ({
   textButton = "Ouvrir",
   variant = "default",
 }: PrimaryDialogProps) => {
+  const [open, setOpen] = useState(false);
+
+  const childrenWithProps = Children.map(children, (child) => {
+    if (isValidElement(child)) {
+      return cloneElement(child, { setOpen });
+    }
+    return child;
+  });
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant={variant}>{textButton}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <div>{children}</div>
+          {childrenWithProps}
         </DialogHeader>
       </DialogContent>
     </Dialog>

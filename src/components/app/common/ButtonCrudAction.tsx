@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { UseMutationResult } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 
 interface ButtonCrudActionProps {
-  mutation: UseMutationResult<unknown>;
+  mutation: { isPending: boolean };
   type: "submit" | "button";
   className?: string;
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost";

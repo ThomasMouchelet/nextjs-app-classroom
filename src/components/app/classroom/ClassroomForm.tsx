@@ -4,20 +4,24 @@ import { Input } from "@/components/ui/input";
 import { Classroom } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormErrorMessage from "../common/FormErrorMessage";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { create } from "@/services/classroom.service";
 import ButtonCrudAction from "../common/ButtonCrudAction";
+import { toast } from "sonner";
 
 interface ClassroomFormProps {
   className?: string;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ClassroomForm = ({ className }: ClassroomFormProps) => {
+const ClassroomForm = ({ className, setOpen }: ClassroomFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Classroom>();
+
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async (formData: Classroom) => {
@@ -27,9 +31,13 @@ const ClassroomForm = ({ className }: ClassroomFormProps) => {
     },
     onSuccess: (data) => {
       console.log("success", data);
+      queryClient.invalidateQueries({ queryKey: ["classrooms"] });
+      toast("Classroom created");
+      setOpen && setOpen(false);
     },
     onError: (data) => {
       console.log("error", data);
+      toast("Classroom created error");
     },
   });
 

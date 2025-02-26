@@ -7,3 +7,8 @@ export async function create(credentials: Classroom): Promise<Classroom> {
   const res = await axios.post(END_POINT, credentials);
   return res.data;
 }
+
+export async function getAll(): Promise<Classroom[]> {
+  const res = await axios.get(END_POINT);
+  return res.data;
+}
