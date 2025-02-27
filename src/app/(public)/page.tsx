@@ -1,5 +1,5 @@
-import ClassroomForm from "@/components/app/classroom/ClassroomForm";
 import ClassroomsList from "@/components/app/classroom/ClassroomsList";
+import ClassroomForm from "@/components/app/classroom/ClassroomForm";
 import PrimaryDialog from "@/components/app/common/PrimaryDialog";
 
 const ClassroomsPage = async () => {

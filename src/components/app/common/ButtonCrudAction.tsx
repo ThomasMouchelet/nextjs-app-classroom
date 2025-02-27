@@ -7,6 +7,7 @@ import ClassroomService from "@/services/classroom.service";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { ClassroomButtonCrudActionDTO } from "@/types/classroom.type";
 
 interface ButtonCrudActionProps {
   type: "submit" | "button";
@@ -15,7 +16,7 @@ interface ButtonCrudActionProps {
   textAction?: string;
   textLoading?: string;
   model: "classroom";
-  action: "create" | "update" | "remove";
+  action: "create" | "remove";
   id?: string;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -40,13 +41,15 @@ const ButtonCrudAction = ({
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: async (data?) => {
+    mutationFn: async (data: ClassroomButtonCrudActionDTO) => {
       console.log("mutationFn", data);
-      const payload = action === "remove" ? { id } : data;
-      console.log("payload", payload);
-      const result = await ModelService[model][action](payload);
-
-      return result;
+      if (action === "remove") {
+        if (!id)
+          throw new Error("L'identifiant est requis pour la suppression");
+        console.log("Suppression avec id:", id);
+        return ModelService[model].remove({ id });
+      }
+      return ModelService[model].create(data);
     },
     onSuccess: (data) => {
       console.log("success", data);
@@ -55,33 +58,32 @@ const ButtonCrudAction = ({
         action === "create" ? "Classroom created" : "Classroom deleted";
       toast(message);
 
-      if (action !== "remove") {
-        setOpen && setOpen(false);
+      if (action !== "remove" && setOpen) {
+        setOpen(false);
       }
 
       if (action === "remove") {
         router.push("/");
       }
-      // setOpen && setOpen(false);
     },
     onError: (data) => {
       console.log("error", data);
-      // toast("Classroom created error");
+      toast("Classroom created error");
     },
   });
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log("handleClick", action);
-    if (action === "create" || action === "update") {
+    if (action === "create") {
       console.log("create update");
       event.preventDefault();
       formContext.handleSubmit((data) => {
-        mutation.mutate(data);
+        mutation.mutate(data as ClassroomButtonCrudActionDTO);
       })();
     } else {
-      console.log("remove");
-      // Pour remove, on lance directement la mutation sans données supplémentaires
-      mutation.mutate();
+      if (id && action === "remove") {
+        mutation.mutate({ id: id as string });
+      }
     }
   };
 

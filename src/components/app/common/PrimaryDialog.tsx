@@ -17,6 +17,10 @@ interface PrimaryDialogProps {
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost";
 }
 
+interface WithSetOpenProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const PrimaryDialog = ({
   children,
   title,
@@ -26,9 +30,10 @@ const PrimaryDialog = ({
   const [open, setOpen] = useState(false);
 
   const childrenWithProps = Children.map(children, (child) => {
-    if (isValidElement(child)) {
+    if (isValidElement<WithSetOpenProps>(child)) {
       return cloneElement(child, { setOpen });
     }
+
     return child;
   });
 
