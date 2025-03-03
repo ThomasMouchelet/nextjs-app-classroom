@@ -21,7 +21,7 @@ const ClassroomForm = ({ className, setOpen }: ClassroomFormProps) => {
 
   return (
     <FormProvider {...methods}>
-      <form className={`${className}`}>
+      <form className={`flex flex-col gap-2 ${className}`}>
         <Input
           type="text"
           placeholder="Entrez votre nom de classe"
