@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 export default function PublicLayout({
@@ -10,6 +12,7 @@ export default function PublicLayout({
       <nav className="container mx-auto flex justify-center gap-4 py-4">
         <Link href="/">Home</Link>
         <Link href="/classrooms">Classrooms</Link>
+        <Link href="/auth/signin">Login</Link>
       </nav>
 
       {children}

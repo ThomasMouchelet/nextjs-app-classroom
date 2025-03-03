@@ -25,3 +25,25 @@ model Classroom {
 
   @@map("classroom")
 }
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+
+  createdAt  DateTime  @default(now())
+  modifiedAt DateTime  @default(now())
+  deletedAt  DateTime?
+
+  @@map("user")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_token")
+}
