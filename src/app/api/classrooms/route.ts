@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -15,6 +16,12 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   console.log("POST classrooms");
   console.log("POST req", req);
+
+  const session = await auth();
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   // Récupérer le body de la requête
   const body = await req.json();
